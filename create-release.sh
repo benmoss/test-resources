@@ -3,6 +3,11 @@ set -exu
 
 tag="$1"
 
+function cleanup {
+  rm "test-${tag}-"*
+}
+trap cleanup EXIT
+
 for os in linux darwin; do
     for arch in amd64 arm64; do
         name="test-${tag}-${os}-${arch}"
@@ -11,4 +16,4 @@ for os in linux darwin; do
     done
 done
 
-gh release create "$tag" test-*
+gh release create "$tag" "test-${tag}-"*
